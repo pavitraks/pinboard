@@ -1,0 +1,51 @@
+<h1>Listing pins</h1>
+<div id="main" role="main">
+<table id="posts">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Board</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="tiles" class="page">
+    <% @pins.each do |pin| %>
+      <tr class="post">
+        <td> <a href="#info" rel="facebox">
+          <div id="info" style="display:none;">
+            <%= render partial: 'pin_post', locals: {pin: pin}%>
+          </div>Pin
+          This</a><%=link_to(image_tag(pin.image.thumb.url), pin) %><p>
+          <%= pin.board.user.email %></p></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= paginate @pins %>
+</div>
+<br>
+
+<%= link_to 'New Pin', new_pin_path %>
+<script type="text/javascript">
+  jQuery(document).ready(function($) {
+    $('a[rel*=facebox]').facebox()
+  })
+  var $handler = $('#tiles td');
+  $handler.wookmark({
+    autoResize: true,
+    container: $('#main'),
+    offset: 5,
+    outerOffset: 10,
+    itemWidth: 210
+  });
+  $handler.click(function(){
+    var newHeight = $('img', this).height() + Math.round(Math.
+        random() * 300 + 30);
+    $(this).css('height', newHeight+'px');
+// Update the layout.
+    $handler.wookmark();
+  });
+</script>
